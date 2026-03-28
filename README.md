@@ -1,4 +1,4 @@
-![SKATLAZ.COM](./asstes/skatlaz.png)
+![SKATLAZ.COM](./assets/skatlaz.png)
 
 # 🚀 Skatlaz LLMs Prompt
 
