@@ -90,16 +90,7 @@ def generate_text_stream(prompt):
     print("\n")
     return full_response
 
-def chat(user_input):
-    if is_image_request(user_input):
-        response = generate_image(user_input)
-        print("\nAssistente:", response)
-    else:
-        response = generate_text_stream(user_input)
-
-    memory.add(user_input, response)
-    return response
-    
+   
 # =========================
 # MEMÓRIA (estilo chat)
 # =========================
@@ -287,6 +278,10 @@ User request:
 # =========================
 def is_image_request(prompt):
     keywords = ["imagem", "foto", "desenho", "ilustração", "gere uma imagem"]
+    return any(k in prompt.lower() for k in keywords)
+
+def is_code_request(prompt):
+    keywords = ["código", "crie um software", "programe", "crie um programa", "crie uma api"]
     return any(k in prompt.lower() for k in keywords)
 
 def chat(user_input):
