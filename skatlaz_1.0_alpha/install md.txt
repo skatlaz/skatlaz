@@ -1,0 +1,3 @@
+#install.md
+
+pip install faiss-cpu sentence-transformers pypdf
