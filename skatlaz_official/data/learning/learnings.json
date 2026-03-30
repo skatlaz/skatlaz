@@ -1,0 +1,30 @@
+{
+  "success_pattern_hello": {
+    "keyword": "hello",
+    "count": 1,
+    "response_types": {
+      "chat": 1
+    }
+  },
+  "success_pattern_kevin": {
+    "keyword": "kevin",
+    "count": 2,
+    "response_types": {
+      "chat": 2
+    }
+  },
+  "success_pattern_mitinick": {
+    "keyword": "mitinick",
+    "count": 2,
+    "response_types": {
+      "chat": 2
+    }
+  },
+  "success_pattern_help": {
+    "keyword": "help",
+    "count": 1,
+    "response_types": {
+      "chat": 1
+    }
+  }
+}

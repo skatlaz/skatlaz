@@ -1,0 +1,37 @@
+[
+  {
+    "timestamp": "2026-03-30T19:54:21.620011",
+    "prompt": "oi",
+    "response": "oitheless, the idea behind it...",
+    "success": true,
+    "prompt_hash": "a2e63ee01401aaeca78be023dfbb8c59"
+  },
+  {
+    "timestamp": "2026-03-30T19:54:29.455026",
+    "prompt": "hello",
+    "response": "hello,Hello, I'm here.",
+    "success": true,
+    "prompt_hash": "5d41402abc4b2a76b9719d911017c592"
+  },
+  {
+    "timestamp": "2026-03-30T19:54:54.445901",
+    "prompt": "kevin mitinick",
+    "response": "kevin mitinick, is that you?",
+    "success": true,
+    "prompt_hash": "b23b0c6b9fa6a06cb94eace519fa450e"
+  },
+  {
+    "timestamp": "2026-03-30T19:55:12.111390",
+    "prompt": "who is kevin mitinick",
+    "response": "who is kevin mitinick",
+    "success": true,
+    "prompt_hash": "d99b4eca134d1495666a1298eb1d0969"
+  },
+  {
+    "timestamp": "2026-03-30T19:55:38.022060",
+    "prompt": "help",
+    "response": "help concludess how the team had nothing to gain from running him.. to make the game more fair. that was great but that was awesome.",
+    "success": true,
+    "prompt_hash": "657f8b8da628ef83cf69101b6817150a"
+  }
+]
