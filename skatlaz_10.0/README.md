@@ -1,4 +1,5 @@
-🧠 Whats have this
+🧠 What does this have?
+
 🔥 Hybrid brain
 
 RAG memory (FAISS)
@@ -8,32 +9,32 @@ memory persistence
 🌐 Web intelligence
 
 Google search
-crawling multi-page
-extração limpa de texto
-🤖 Swarm de agentes reais
+multi-page crawling
+clean text extraction
+🤖 Swarm of real agents
 Planner
 Researcher
 Analyst
 Critic
 Synthesizer
 
-🌤️ Tools nativas
+🌤️ Native tools
 
 Weather API (Open-Meteo)
 for any API
 
 🔁 Loop minding
 
-pesquisa → análise → crítica → síntese → memória
+search → analysis → critique → synthesis → memory
 
-💬 Chat multimodo
+💬 Multimode chat
 
-pesquisa
-clima
-história
-código
-resposta geral
+search
+weather
+history
+code
+general response
 
-🧩 arquitetura pronta para LLM externo
+🧩 Architecture ready for external LLM
 
-OpenAI / HuggingFace / Ollama plugável
+OpenAI / HuggingFace / Ollama pluggable
