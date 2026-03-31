@@ -1,0 +1,8 @@
+{
+  "openai_api_key": "sk-...",
+  "anthropic_api_key": "sk-ant-...",
+  "deepseek_api_key": "sk-...",
+  "huggingface_api_key": "hf_...",
+  "weather_api_key": "your_openweather_key",
+  "google_maps_key": "your_google_maps_key"
+}
