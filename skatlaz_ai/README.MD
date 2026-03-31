@@ -1,4 +1,4 @@
-![SKATLAZ.COM](./assets/skatlaz.png)
+![SKATLAZ.COM](../assets/skatlaz.png)
 
 # Skatlaz AI - Mini Perplexity + AutoGPT + RAG Assistant System
 
