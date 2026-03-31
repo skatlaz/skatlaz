@@ -92,7 +92,73 @@ info = rdap_lookup("google.com")
 if not get_cached("google.com"):
     save_cache("google.com", str(info))
 ```
+ADVANCED CRAWLER
 
+```python
+from skatlaz.advanced_crawler import analyze
+
+results = analyze(keyword)
+```
+
+RETURN
+
+```json
+{
+  "site": "www.uol.com.br",
+  "description": "UOL - O melhor conteúdo",
+  "sections": [
+    {
+      "name": "Notícias",
+      "url": "https://www.uol.com.br/noticias/"
+    },
+    {
+      "name": "Esportes",
+      "url": "https://www.uol.com.br/esporte/"
+    }
+  ],
+  "thumbnail": "data:image/gif;base64,R0lGODlh...",
+  "thumbnail_path": "thumbnail-1234567890.gif",
+  "breadcrumbs": [
+    {
+      "name": "Home",
+      "url": "https://www.uol.com.br/"
+    },
+    {
+      "name": "Notícias",
+      "url": "https://www.uol.com.br/noticias/"
+    }
+  ],
+  "search_results": [
+    {
+      "title": "Título da página encontrada",
+      "url": "https://www.uol.com.br/noticias/artigo.html",
+      "score": 28,
+      "matched_words": ["notícias", "política"],
+      "snippet": "...texto com <strong>destaque</strong> da busca..."
+    }
+  ],
+  "internal_pages": [
+    {
+      "url": "https://www.uol.com.br/noticias/",
+      "depth": 1,
+      "title": "Últimas Notícias",
+      "word_count": 1250
+    }
+  ],
+  "content_index": {
+    "https://www.uol.com.br/": {
+      "title": "UOL - O melhor conteúdo",
+      "url": "https://www.uol.com.br/",
+      "top_words": [
+        {"word": "notícias", "count": 45},
+        {"word": "brasil", "count": 32}
+      ],
+      "text_snippet": "Primeiros 500 caracteres do texto...",
+      "word_count": 2500
+    }
+  }
+}
+```
 ---
 
  =========================
