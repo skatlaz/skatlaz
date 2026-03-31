@@ -1,10 +1,62 @@
-# SKATLAZ WHOIS
+## ▶️ Usage Guide
+
+This section explains how to run and use **skatlaz_whois** as a search engine and AI assistant.
 
 ---
 
-## ▶️ Usage Guide
+### 1. Start the Engine
 
-### 🕷️ Start crawler
+Run the main entrypoint:
+
+```bash
+python skatlaz_whois.py
+```
+
+This will:
+- Initialize the database
+- Start the crawler
+- Launch the API server (Flask)
+
+Default server:
+
+```
+http://localhost:5000
+```
+
+---
+
+### 2. Start Crawling Websites
+
+To begin indexing the web, provide a seed URL:
+
+```
+GET /start?url=https://example.com
+```
+
+Example:
+
+```
+http://localhost:5000/start?url=https://wikipedia.org
+```
+
+The crawler will:
+- Visit the page
+- Extract content
+- Follow links automatically
+- Store results in the database
+
+---
+
+### 3. Perform a Search (Google-style)
+
+```
+GET /search?q=your_query
+```
+
+Example:
+
+Created as an experimental AI-powered search engine framework.
+
 
 ```
 GET /start?url=https://example.com
