@@ -1,5 +1,7 @@
+![SKATLAZ.COM](./assets/skatlaz.png)
+
 ```markdown
-# 🎬 Skatzla AvadraTV - YouTube-like Video & Music Platform
+# 🎬 Skatzla AvadraTV - Media-like Video & Music Platform
 
 ![Skatzla AvadraTV Banner](https://via.placeholder.com/1200x300/0f0f0f/ffffff?text=Skatzla+AvadraTV)
 
