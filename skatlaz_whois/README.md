@@ -1,22 +1,5 @@
 # skatlaz_whois - Modular Package Structure (pip-ready)
 
-# =========================
-# Project Structure
-# =========================
-# skatlaz_whois/
-# ├── skatlaz/
-# │   ├── __init__.py
-# │   ├── whois.py
-# │   ├── database.py
-# │   ├── crawler.py
-# │   ├── scraper.py
-# │   ├── search.py
-# │   ├── ai.py
-# │   └── api.py
-# ├── skatlaz_whois.py  (main entrypoint)
-# ├── pyproject.toml
-# └── README.md
-
 ### 🧠 How its works:
 
 from skatlaz import whois, database, crawler, ai
