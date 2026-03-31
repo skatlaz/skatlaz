@@ -1,4 +1,4 @@
-![SKATLAZ.COM](./assets/skatlaz.png)
+![SKATLAZ.COM](../assets/skatlaz.png)
 
 ```markdown
 # 🎬 Skatzla AvadraTV - Media-like Video & Music Platform
