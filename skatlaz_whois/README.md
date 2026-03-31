@@ -1,3 +1,5 @@
+![SKATLAZ.COM](../assets/skatlaz.png)
+
 ## skatlaz_whois - Modular Package Structure (pip-ready)
 
 ### 🧠 How its works:
