@@ -1,3 +1,5 @@
+![SKATLAZ.COM](./assets/skatlaz.png)
+
 # Skatlaz AI - Mini Perplexity + AutoGPT + RAG Assistant System
 
 A comprehensive AI assistant with modular architecture supporting intelligent chat, web search, vector memory, agent swarms, and Hugging Face model integration.
