@@ -1,9 +1,0 @@
-transformers
-torch
-sentence-transformers
-faiss-cpu
-diffusers
-spacy
-requests
-pypdf
-google-api-python-client

@@ -1,7 +1,0 @@
-route ai(user_id: string, prompt: string):
-    result = run_ai(user_id, prompt)
-    emit "result", result
-
-route upload(user_id: string, path: string):
-    result = upload(user_id, path)
-    emit "notify", result
