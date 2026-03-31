@@ -72,9 +72,9 @@ answer = ai.answer("What is Python?", results)
 crawler.start(["https://example.com"])
 ```
 
-### =========================
-### USAGE WHOIS CZDS - EXAMPLE (PRO LEVEL)
-### =========================
+ =========================
+ USAGE WHOIS CZDS - EXAMPLE (PRO LEVEL)
+ =========================
 
 ```python
 from skatlaz.domain_pipeline import run_pipeline
