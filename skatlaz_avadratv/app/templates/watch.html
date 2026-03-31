@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}{{ video.title }} - Skatzla AvadraTV{% endblock %}
+
+{% block extra_css %}
+<style>
+    .video-container {
+        position: relative;
+        width: 100%;
+        padding-bottom: 56.25%;
+        background: #000;
+        margin-bottom: 20px;
+    }
+    .video-container video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .hashtag {
+        display: inline-block;
+        background: #f0f0f0;
+        padding: 4px 8px;
+        border-radius: 4px;
+        margin-right: 8px;
+        font-size: 12px;
+        color: #065fd4;
+    }
+    .like-btn, .dislike-btn {
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    .like-btn.active { color: #3ea6ff; }
+    .dislike-btn.active { color: #ff4d4d; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Video Player -->
+            <div class="video-container">
+                <video id="main-video" controls>
+                    <source src="{{ url_for('static', filename='uploads/videos/' + video.filename) }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            
+            <!-- Video Info -->
+            <h2>{{ video.title }}</h2>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex align-items-center">
+                    <img src="{{ video.uploader.avatar or url_for('static', filename='default_avatar.png') }}" 
+                         class="rounded-circle me-2" width="40" height="40">
+                    <div>
+                        <a href="{{ url_for('channel.view', username=video.uploader.username) }}" class="text-decoration-none fw-bold">
+                            {{ video.uploader.username }}
+                        </a>
+                        <div class="text-muted small">{{ video.channel.subscribers }} subscribers</div>
+                    </div>
+                    <button class="btn btn-outline-secondary ms-3">Subscribe</button>
+                </div>
+                <div class="d-flex">
+                    <div class="me-3">
+                        <span id="like-btn" class="like-btn {% if user_like and user_like.is_like %}active{% endif %}" data-video-id="{{ video.id }}">
+                            <i class="fas fa-thumbs-up"></i> <span id="like-count">{{ video.likes }}</span>
+                        </span>
+                        <span id="dislike-btn" class="dislike-btn ms-3 {% if user_like and user_like.is_like == False %}active{% endif %}" data-video-id="{{ video.id }}">
+                            <i class="fas fa-thumbs-down"></i> <span id="dislike-count">{{ video.dislikes }}</span>
+                        </span>
+                    </div>
+                    <button class="btn btn-outline-secondary" id="share-btn">
+                        <i class="fas fa-share"></i> Share
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Description -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="mb-2">
+                        <strong>{{ video.views }} views • {{ video.created_at.strftime('%b %d, %Y') }}</strong>
+                    </div>
+                    <div class="mb-2">
+                        {% for tag in video.get_hashtags_list() %}
+                            <span class="hashtag">#{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+                    <p>{{ video.description }}</p>
+                    <div class="text-muted small">
+                        License: {{ video.license_type }} • Region: {{ video.region }}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Comments Section -->
+            <div class="comments-section">
+                <h4>{{ video.comments.count() }} Comments</h4>
+                
+                {% if current_user.is_authenticated %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <textarea id="comment-content" class="form-control mb-2" rows="2" placeholder="Add a comment..."></textarea>
+                        <button class="btn btn-primary" id="submit-comment">Comment</button>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div id="comments-list">
+                    {% for comment in video.comments.filter_by(parent_id=None).order_by(Comment.created_at.desc()) %}
+                        {% include '_comment.html' %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <h5>Recommended Videos</h5>
+            {% for rec in recommendations %}
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-4">
+                        <img src="{{ url_for('static', filename='uploads/thumbnails/' + rec.thumbnail) }}" class="img-fluid rounded" style="height: 80px; object-fit: cover;">
+                    </div>
+                    <div class="col-8">
+                        <div class="card-body p-2">
+                            <a href="{{ url_for('media.watch', video_id=rec.id) }}" class="text-decoration-none">
+                                <h6 class="card-title mb-0">{{ rec.title[:50] }}</h6>
+                            </a>
+                            <small class="text-muted">{{ rec.uploader.username }} • {{ rec.views }} views</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    // Like/Dislike functionality
+    $('#like-btn, #dislike-btn').click(function() {
+        const isLike = $(this).attr('id') === 'like-btn';
+        const videoId = $(this).data('video-id');
+        
+        $.post('/api/media/like', {
+            video_id: videoId,
+            is_like: isLike
+        }, function(response) {
+            if (response.success) {
+                $('#like-count').text(response.likes);
+                $('#dislike-count').text(response.dislikes);
+                
+                if (isLike) {
+                    $('#like-btn').addClass('active');
+                    $('#dislike-btn').removeClass('active');
+                } else {
+                    $('#dislike-btn').addClass('active');
+                    $('#like-btn').removeClass('active');
+                }
+            }
+        });
+    });
+    
+    // Share button
+    $('#share-btn').click(function() {
+        const url = window.location.href;
+        const shareUrl = `https://api.skatzla.com/share?url=${encodeURIComponent(url)}`;
+        prompt('Share this link:', url);
+    });
+    
+    // Submit comment
+    $('#submit-comment').click(function() {
+        const content = $('#comment-content').val();
+        if (!content) return;
+        
+        $.post('/api/media/comment', {
+            video_id: {{ video.id }},
+            content: content
+        }, function(response) {
+            if (response.success) {
+                location.reload();
+            }
+        });
+    });
+    
+    // Track view
+    $.post('/api/media/view', { video_id: {{ video.id }} });
+});
+</script>
+{% endblock %}

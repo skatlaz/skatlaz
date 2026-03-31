@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Skatzla AvadraTV - Watch videos and music{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Trending Section -->
+    <section class="mb-5">
+        <h2 class="mb-4">Trending Now 🔥</h2>
+        <div class="row">
+            {% for video in trending %}
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="video-card" onclick="location.href='{{ url_for('media.watch', video_id=video.id) }}'">
+                    <div class="video-thumbnail">
+                        <img src="{{ url_for('static', filename='uploads/thumbnails/' + video.thumbnail) }}" 
+                             alt="{{ video.title }}">
+                        <span class="video-duration">{{ video.duration|format_duration }}</span>
+                    </div>
+                    <div class="video-info">
+                        <div class="video-title">{{ video.title[:60] }}</div>
+                        <div class="video-meta">
+                            {{ video.uploader.username }} • {{ video.views|format_number }} views
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    
+    <!-- Latest Uploads -->
+    <section class="mb-5">
+        <h2 class="mb-4">Latest Uploads 🆕</h2>
+        <div class="row">
+            {% for video in latest.items %}
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="video-card" onclick="location.href='{{ url_for('media.watch', video_id=video.id) }}'">
+                    <div class="video-thumbnail">
+                        <img src="{{ url_for('static', filename='uploads/thumbnails/' + video.thumbnail) }}" 
+                             alt="{{ video.title }}">
+                        <span class="video-duration">{{ video.duration|format_duration }}</span>
+                    </div>
+                    <div class="video-info">
+                        <div class="video-title">{{ video.title[:60] }}</div>
+                        <div class="video-meta">
+                            {{ video.uploader.username }} • {{ video.views|format_number }} views
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {% if latest.has_prev %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('main.index', page=latest.prev_num) }}">Previous</a>
+                </li>
+                {% endif %}
+                
+                {% for page_num in latest.iter_pages() %}
+                    {% if page_num %}
+                        <li class="page-item {% if page_num == latest.page %}active{% endif %}">
+                            <a class="page-link" href="{{ url_for('main.index', page=page_num) }}">{{ page_num }}</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if latest.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('main.index', page=latest.next_num) }}">Next</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </section>
+    
+    <!-- Popular Channels -->
+    <section>
+        <h2 class="mb-4">Popular Channels 📺</h2>
+        <div class="row">
+            {% for channel in popular_channels %}
+            <div class="col-md-2 col-sm-4 mb-4 text-center">
+                <a href="{{ url_for('channel.view', username=channel.owner.username) }}" class="text-decoration-none">
+                    <img src="{{ channel.owner.avatar or url_for('static', filename='default_avatar.png') }}" 
+                         class="rounded-circle mb-2" width="100" height="100">
+                    <h6 class="mb-0">{{ channel.name }}</h6>
+                    <small class="text-muted">{{ channel.subscribers|format_number }} subscribers</small>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+
+{% block extra_js %}
+<script>
+// Load more videos on scroll
+let page = 1;
+let loading = false;
+
+$(window).scroll(function() {
+    if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+        if (!loading && {{ latest.has_next|lower }}) {
+            loading = true;
+            page++;
+            $.get('{{ url_for("main.index") }}?page=' + page, function(data) {
+                const videos = $(data).find('.video-card');
+                $('.row:last').append(videos);
+                loading = false;
+            });
+        }
+    }
+});
+</script>
+{% endblock %}
+{% endblock %}

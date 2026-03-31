@@ -1,0 +1,79 @@
+<div class="comment mb-3" id="comment-{{ comment.id }}">
+    <div class="d-flex">
+        <img src="{{ comment.author.avatar or url_for('static', filename='default_avatar.png') }}" 
+             class="rounded-circle me-2" width="40" height="40">
+        <div class="flex-grow-1">
+            <div class="d-flex align-items-center">
+                <strong class="me-2">{{ comment.author.username }}</strong>
+                <small class="text-muted">{{ comment.created_at.strftime('%b %d, %Y') }}</small>
+            </div>
+            <p class="mb-1">{{ comment.content }}</p>
+            <div class="comment-actions">
+                <button class="btn btn-sm btn-link like-comment" data-comment-id="{{ comment.id }}">
+                    <i class="fas fa-thumbs-up"></i> <span class="like-count">{{ comment.likes }}</span>
+                </button>
+                <button class="btn btn-sm btn-link reply-btn" data-comment-id="{{ comment.id }}">
+                    <i class="fas fa-reply"></i> Reply
+                </button>
+            </div>
+            
+            <!-- Reply form (hidden) -->
+            <div class="reply-form mt-2" id="reply-form-{{ comment.id }}" style="display: none;">
+                <textarea class="form-control mb-2" rows="2" placeholder="Write a reply..."></textarea>
+                <button class="btn btn-sm btn-primary submit-reply" data-parent-id="{{ comment.id }}">
+                    Submit Reply
+                </button>
+                <button class="btn btn-sm btn-secondary cancel-reply">Cancel</button>
+            </div>
+            
+            <!-- Replies -->
+            {% if comment.replies %}
+            <div class="replies mt-2 ms-4">
+                {% for reply in comment.replies %}
+                    {% include '_comment.html' with context %}
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    $('.reply-btn').click(function() {
+        const commentId = $(this).data('comment-id');
+        $(`#reply-form-${commentId}`).toggle();
+    });
+    
+    $('.cancel-reply').click(function() {
+        $(this).closest('.reply-form').hide();
+    });
+    
+    $('.submit-reply').click(function() {
+        const parentId = $(this).data('parent-id');
+        const content = $(this).siblings('textarea').val();
+        
+        if (!content) return;
+        
+        $.post('/api/media/comment', {
+            video_id: {{ video.id }},
+            content: content,
+            parent_id: parentId
+        }, function(response) {
+            if (response.success) {
+                location.reload();
+            }
+        });
+    });
+    
+    $('.like-comment').click(function() {
+        const commentId = $(this).data('comment-id');
+        // Implement comment like functionality
+        $.post('/api/media/comment_like', { comment_id: commentId }, function(response) {
+            if (response.success) {
+                $(this).find('.like-count').text(response.likes);
+            }
+        }.bind(this));
+    });
+});
+</script>

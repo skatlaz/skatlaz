@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+
+{% block title %}{{ channel.name }} - Skatzla AvadraTV{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Channel Banner -->
+    <div class="channel-header mb-4">
+        <img src="{{ channel.banner or url_for('static', filename='default_banner.jpg') }}" 
+             class="channel-banner" alt="Channel Banner">
+        <div class="channel-info">
+            <img src="{{ user.avatar or url_for('static', filename='default_avatar.png') }}" 
+                 class="channel-avatar" alt="{{ user.username }}">
+            <div class="channel-details">
+                <h2>{{ channel.name }}</h2>
+                <p class="text-muted">@{{ user.username }} • {{ channel.subscribers|format_number }} subscribers</p>
+                {% if channel.description %}
+                    <p>{{ channel.description }}</p>
+                {% endif %}
+                {% if current_user.is_authenticated and current_user.id != user.id %}
+                    <button class="btn subscribe-btn" data-channel-id="{{ channel.id }}">
+                        {% if is_subscribed %}
+                            Subscribed
+                        {% else %}
+                            Subscribe
+                        {% endif %}
+                    </button>
+                {% endif %}
+                {% if current_user.id == user.id %}
+                    <a href="{{ url_for('channel.edit') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-edit"></i> Customize Channel
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Videos Tab -->
+    <div class="row">
+        <div class="col-12">
+            <ul class="nav nav-tabs mb-4">
+                <li class="nav-item">
+                    <a class="nav-link active" data-bs-toggle="tab" href="#videos">Videos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#playlists">Playlists</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#about">About</a>
+                </li>
+            </ul>
+            
+            <div class="tab-content">
+                <!-- Videos Tab -->
+                <div class="tab-pane fade show active" id="videos">
+                    <div class="row">
+                        {% for video in videos.items %}
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <div class="video-card" onclick="location.href='{{ url_for('media.watch', video_id=video.id) }}'">
+                                <div class="video-thumbnail">
+                                    <img src="{{ url_for('static', filename='uploads/thumbnails/' + video.thumbnail) }}" 
+                                         alt="{{ video.title }}">
+                                    <span class="video-duration">{{ video.duration|format_duration }}</span>
+                                </div>
+                                <div class="video-info">
+                                    <div class="video-title">{{ video.title[:60] }}</div>
+                                    <div class="video-meta">
+                                        {{ video.views|format_number }} views • {{ video.created_at.strftime('%b %d, %Y') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            {% if videos.has_prev %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('channel.view', username=user.username, page=videos.prev_num) }}">Previous</a>
+                            </li>
+                            {% endif %}
+                            
+                            {% for page_num in videos.iter_pages() %}
+                                {% if page_num %}
+                                    <li class="page-item {% if page_num == videos.page %}active{% endif %}">
+                                        <a class="page-link" href="{{ url_for('channel.view', username=user.username, page=page_num) }}">{{ page_num }}</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if videos.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ url_for('channel.view', username=user.username, page=videos.next_num) }}">Next</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+                
+                <!-- Playlists Tab -->
+                <div class="tab-pane fade" id="playlists">
+                    <div class="row">
+                        {% for playlist in channel.playlists %}
+                        <div class="col-md-4 mb-4">
+                            <div class="card bg-dark">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ playlist.name }}</h5>
+                                    <p class="card-text">{{ playlist.description }}</p>
+                                    <small class="text-muted">{{ playlist.videos|length }} videos</small>
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="col-12 text-center py-5">
+                            <i class="fas fa-playlist fa-4x mb-3 text-muted"></i>
+                            <p>No playlists yet</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <!-- About Tab -->
+                <div class="tab-pane fade" id="about">
+                    <div class="card bg-dark">
+                        <div class="card-body">
+                            <h5>Channel Description</h5>
+                            <p>{{ channel.description or 'No description provided.' }}</p>
+                            
+                            <hr>
+                            
+                            <h5>Stats</h5>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <strong>{{ videos.total }}</strong> videos
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>{{ channel.subscribers|format_number }}</strong> subscribers
+                                </div>
+                                <div class="col-md-4">
+                                    <strong>Joined {{ user.created_at.strftime('%B %Y') }}</strong>
+                                </div>
+                            </div>
+                            
+                            <hr>
+                            
+                            <h5>Links</h5>
+                            <a href="#" class="btn btn-outline-secondary btn-sm">
+                                <i class="fas fa-envelope"></i> Contact
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    $('.subscribe-btn').click(function() {
+        const btn = $(this);
+        const channelId = btn.data('channel-id');
+        
+        $.post('/channel/subscribe/' + channelId, function(response) {
+            if (response.subscribed) {
+                btn.text('Subscribed').removeClass('btn-outline-primary').addClass('btn-primary');
+            } else {
+                btn.text('Subscribe').removeClass('btn-primary').addClass('btn-outline-primary');
+            }
+            btn.siblings('.subscriber-count').text(formatNumber(response.subscribers));
+        });
+    });
+});
+</script>
+{% endblock %}
