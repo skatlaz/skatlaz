@@ -1,5 +1,22 @@
 # skatlaz_whois - Modular Package Structure (pip-ready)
 
+# =========================
+# Project Structure
+# =========================
+# skatlaz_whois/
+# ├── skatlaz/
+# │   ├── __init__.py
+# │   ├── whois.py
+# │   ├── database.py
+# │   ├── crawler.py
+# │   ├── scraper.py
+# │   ├── search.py
+# │   ├── ai.py
+# │   └── api.py
+# ├── skatlaz_whois.py  (main entrypoint)
+# ├── pyproject.toml
+# └── README.md
+
 ### 🧠 How its works:
 
 from skatlaz import whois, database, crawler, ai
@@ -69,6 +86,27 @@ answer = ai.answer("What is Python?", results)
 
 crawler.start(["https://example.com"])
 ```
+
+# =========================
+# USAGE WHOIS CZDS - EXAMPLE (PRO LEVEL)
+# =========================
+
+"""
+from skatlaz.domain_pipeline import run_pipeline
+from skatlaz.rdap import rdap_lookup
+from skatlaz.whois_cache import get_cached, save_cache
+
+# 1. Download + parse + store millions of domains
+count = run_pipeline("YOUR_CZDS_API_KEY", "com")
+print("Imported domains:", count)
+
+# 2. RDAP lookup
+info = rdap_lookup("google.com")
+
+# 3. Cache WHOIS
+if not get_cached("google.com"):
+    save_cache("google.com", str(info))
+"""
 
 ---
 
