@@ -1,3 +1,0 @@
-route agent(prompt: string):
-    result = run_agent(prompt)
-    emit "result", result
