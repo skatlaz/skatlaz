@@ -95,9 +95,29 @@ if not get_cached("google.com"):
 ADVANCED CRAWLER
 
 ```python
-from skatlaz.advanced_crawler import analyze
+import asyncio
+import json
+from advanced_crawler import AdvancedSiteAnalyzer
 
-results = analyze(keyword)
+async def exemplo_basico():
+    # Create instance like init URL
+    crawler = AdvancedSiteAnalyzer(
+        url='https://www.uol.com.br',
+        max_pages=20,      # Max pages
+        max_depth=2        # Deep do crawl (0 = only init page)
+    )
+    
+    # Executa análise
+    result = await crawler.analyze()
+    
+    # Save result
+    with open('result.json', 'w', encoding='utf-8') as f:
+        json.dump(result, f, ensure_ascii=False, indent=2)
+    
+    print(f"✅ {len(result['internal_pages'])} pages tracked")
+
+# Executa
+asyncio.run(example())
 ```
 
 RETURN
