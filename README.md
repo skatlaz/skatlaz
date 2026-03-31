@@ -40,13 +40,12 @@ pip install -r requirements.txt
 You can interact with the LLM system using the CLI entry point:
 
 ```bash
-python bin/@skatlaz_llms_prompt.py
-```
+pip install skatlaz_ai
+pip install skatlaz_whois
 
-### Example
+or
 
-```bash
-python bin/@skatlaz_llms_prompt.py --prompt "Create a REST API in Python using FastAPI"
+pip install skatlaz
 ```
 
 ---
@@ -82,21 +81,6 @@ Upcoming features include:
 
 ---
 
-## 🧩 Project Structure
-
-```bash
-skatlaz/
-│── bin/
-│   └── @skatlaz_llms_prompt.py   # CLI entry point for LLM interaction
-│── core/
-│── models/
-│── utils/
-│── requirements.txt
-│── README.md
-```
-
----
-
 ## 🤝 Contributing
 
 Contributions are welcome!
@@ -123,6 +107,7 @@ The goal of **Skatlaz LLMs Prompt** is to evolve into a powerful platform simila
 * Automate development workflows
 * Explore advanced LLM capabilities
 
+### by: skatlaz.com
 ---
 
 ## 📬 Contact
