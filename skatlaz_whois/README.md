@@ -1,5 +1,3 @@
-![SKATLAZ.COM](../assets/skatlaz.png)
-
 ## skatlaz_whois - Modular Package Structure (pip-ready)
 
 ### 🧠 How its works:
@@ -95,6 +93,47 @@ if not get_cached("google.com"):
 
 ---
 
+ =========================
+ RUN EVERYTHING
+ =========================
+
+ 1. Build and start all services
+ docker-compose up --build
+
+ 2. Access API
+ http://localhost:5000
+
+ 3. Start crawler
+ http://localhost:5000/start?url=https://wikipedia.org
+
+ 4. Search
+ http://localhost:5000/search?q=python
+
+ 5. AI
+ http://localhost:5000/ask?q=What is Python?
+
+ =========================
+ NOTES
+ =========================
+ - Elasticsearch may take ~30s to start
+ - PostgreSQL persists data in volume
+ - Redis handles crawl queue
+ - Worker runs crawling in background
+
+ =========================
+ RESULT
+ =========================
+ One command:
+ docker-compose up --build
+
+ You now have:
+ - Search engine
+ - AI answers
+ - Distributed crawler
+ - Domain intelligence base
+
+ Running locally like a real startup stack 🚀
+ 
 ## ⚠️ Limitations
 
 - Basic ranking (no PageRank yet)
@@ -139,3 +178,4 @@ For major changes, open an issue first to discuss what you would like to change.
 ## 👨‍💻 Author
 
 Created as an experimental AI-powered search engine framework.
+

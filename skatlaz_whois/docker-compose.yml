@@ -1,0 +1,76 @@
+# =========================
+# DOCKER COMPOSE (ONE-COMMAND STACK)
+# =========================
+
+# This stack runs locally:
+# - API (FastAPI)
+# - PostgreSQL
+# - Redis (queue)
+# - Elasticsearch
+# - Worker (crawler)
+
+# =========================
+# docker-compose.yml
+# =========================
+"""
+version: '3.9'
+
+services:
+  api:
+    build: .
+    container_name: skatlaz_api
+    command: python skatlaz_whois.py
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+      - redis
+      - elastic
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/skatlaz
+      - REDIS_URL=redis://redis:6379
+      - ELASTIC_URL=http://elastic:9200
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+
+  worker:
+    build: .
+    container_name: skatlaz_worker
+    command: python worker.py
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: postgres:15
+    container_name: skatlaz_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: skatlaz
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7
+    container_name: skatlaz_redis
+    ports:
+      - "6379:6379"
+
+  elastic:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: skatlaz_elastic
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+
+volumes:
+  pgdata:
+  esdata:
+"""
