@@ -1,3 +1,5 @@
+![SKATLAZ.COM](./assets/skatlaz.png)
+
 ```markdown
 # Skatlaz Translator - Intelligent Translation System
 
