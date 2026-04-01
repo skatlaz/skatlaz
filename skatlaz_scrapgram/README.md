@@ -1,3 +1,5 @@
+![SKATLAZ.COM](../assets/skatlaz.png)
+
 # 🚀 Skatlaz Scrapgram
 
 A complete messaging system inspired by Telegram.
